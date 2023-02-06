@@ -13,5 +13,7 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+route:middleware(['sanctum'])->group(function () {
+    Route::resource('users', UserController::class)->except('create');
+});
 
-Route::resource('users', UserController::class)->except('create');
