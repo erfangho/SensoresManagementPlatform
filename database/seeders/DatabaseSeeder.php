@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             ZoneSeeder::class,
             SubZoneSeeder::class,
             DeviceSeeder::class,
+            TemperatureSeeder::class,
         ]);
     }
 }
