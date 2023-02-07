@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             SubZoneSeeder::class,
             DeviceSeeder::class,
             TemperatureSeeder::class,
+            HumiditySeeder::class,
         ]);
     }
 }
