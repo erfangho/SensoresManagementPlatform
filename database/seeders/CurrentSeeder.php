@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Humidity;
+use App\Models\Current;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class HumiditySeeder extends Seeder
+class CurrentSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,6 +15,6 @@ class HumiditySeeder extends Seeder
      */
     public function run()
     {
-        Humidity::factory(20)->create();
+        Current::factory(20)->create();
     }
 }
