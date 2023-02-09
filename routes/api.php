@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\Zone\ZoneController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,3 +20,4 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::resource('users', UserController::class)->except('create');
+Route::resource('zones', ZoneController::class)->except('create');
