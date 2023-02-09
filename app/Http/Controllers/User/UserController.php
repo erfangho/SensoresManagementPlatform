@@ -41,41 +41,33 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        $userDetails = $request->only([
-            'role_id',
-            'name',
-            'email',
-            'phone',
-            'password',
-        ]);
-
-        $userDetails['role_id'] = (int)$userDetails['role_id'];
-
-        return response()->json([
-            'data' => $this->userRepository->createUser($userDetails)
-        ], ResponseAlias::HTTP_CREATED);
+        return response()->json(
+            $this->userRepository->createUser($request)
+        , ResponseAlias::HTTP_CREATED);
     }
 
     /**
      * Display the specified resource.
      *
      * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show(User $user)
     {
-        //
+        return response()->json([
+            'user' => $this->userRepository->getUser($user),
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function edit(User $user)
     {
-        //
+        return response()->json($user);
     }
 
     /**
@@ -83,21 +75,25 @@ class UserController extends Controller
      *
      * @param  \App\Http\Requests\UserRequests\UpdateUserRequest  $request
      * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        //
+        return response()->json(
+            $this->userRepository->updateUser($user, $request)
+        , ResponseAlias::HTTP_OK);
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(User $user)
     {
-        //
+        return response()->json(
+            $this->userRepository->deleteUser($user)
+        , ResponseAlias::HTTP_OK);
     }
 }

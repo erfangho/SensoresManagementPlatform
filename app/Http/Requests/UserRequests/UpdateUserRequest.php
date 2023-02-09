@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests\UserRequests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 
 class UpdateUserRequest extends FormRequest
 {
@@ -13,7 +16,7 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +27,15 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'role_id' => 'integer|between:1,2',
+            'name' => 'string',
+            'email' => 'email',
+            'phone' => 'unique:users',
+            'password' => 'string|min:6'
         ];
+    }
+
+    protected function failedValidation(Validator $validator) {
+        throw new HttpResponseException(response()->json($validator->errors(), HttpFoundationResponse::HTTP_UNPROCESSABLE_ENTITY));
     }
 }

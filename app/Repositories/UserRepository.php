@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Interfaces\UserRepositoryInterface;
 use App\Models\User;
+use Illuminate\Http\Request;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -12,23 +13,61 @@ class UserRepository implements UserRepositoryInterface
         return User::all();
     }
 
-    public function getUserById($userId)
+    public function getUser($user)
     {
-        return User::findOrFail($userId);
+        return $user;
     }
 
-    public function deleteUser($userId)
+    public function deleteUser($user)
     {
-        return User::destroy($userId);
+        if ($user->deleteOrFail()) {
+            return [
+                'message' => 'user deleted successfully',
+            ];
+        } else {
+            return $user->deleteOrFail();
+        }
     }
 
-    public function createUser(array $userDetails)
+    public function createUser(Request $request)
     {
-        return User::create($userDetails);
+        $userDetails = $request->only([
+            'role_id',
+            'name',
+            'email',
+            'phone',
+            'password',
+        ]);
+
+        $userDetails['role_id'] = (int)$userDetails['role_id'];
+
+        return [
+            'user' => User::create($userDetails),
+            'message' => 'user created successfully',
+        ];
     }
 
-    public function updateUser($userId, array $newDetails)
+    public function updateUser($user, Request $request)
     {
-        return User::whereId($userId)->update($newDetails);
+        $newDetails = $request->only([
+            'role_id',
+            'name',
+            'email',
+            'phone',
+            'password',
+        ]);
+
+        if (isset($newDetails['role_id'])) {
+            $newDetails['role_id'] = (int)$newDetails['role_id'];
+        }
+
+        if ($user->update($newDetails)) {
+            return [
+                'user' => $user,
+                'message' => 'user updated successfully',
+            ];
+        } else {
+            return $user->update($newDetails);
+        }
     }
 }

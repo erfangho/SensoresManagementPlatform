@@ -2,11 +2,14 @@
 
 namespace App\Interfaces;
 
+use App\Models\User;
+use Illuminate\Http\Request;
+
 interface UserRepositoryInterface
 {
     public function getAllUsers();
-    public function getUserById($userId);
-    public function deleteUser($userId);
-    public function createUser(array $userDetails);
-    public function updateUser($userId, array $newDetails);
+    public function getUser(User $user);
+    public function deleteUser(User $user);
+    public function createUser(Request $request);
+    public function updateUser(User $user, Request $request);
 }

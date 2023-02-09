@@ -17,3 +17,5 @@ use Illuminate\Support\Facades\Route;
 //    Route::resource('users', UserController::class)->except('create');
 //});
 
+
+Route::resource('users', UserController::class)->except('create');
