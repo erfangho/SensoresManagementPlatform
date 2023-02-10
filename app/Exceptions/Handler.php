@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Database\QueryException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -55,6 +56,12 @@ class Handler extends ExceptionHandler
             return response()->json([
                 'message' => 'not found',
             ],ResponseAlias::HTTP_NOT_FOUND);
+        });
+
+        $this->renderable(function (QueryException $e, $request) {
+            return response()->json([
+                'message' => 'something wrong in database',
+            ],ResponseAlias::HTTP_CONFLICT);
         });
     }
 
