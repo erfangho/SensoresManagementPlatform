@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class SubZone extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'zone_id',
+        'detail',
+    ];
 }

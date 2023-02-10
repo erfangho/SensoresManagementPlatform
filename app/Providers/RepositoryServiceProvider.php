@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Interfaces\SubZoneRepositoryInterface;
 use App\Interfaces\UserRepositoryInterface;
 use App\Interfaces\ZoneRepositoryInterface;
+use App\Repositories\SubZoneRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\ZoneRepository;
 use Illuminate\Support\ServiceProvider;
@@ -19,6 +21,7 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
         $this->app->bind(ZoneRepositoryInterface::class, ZoneRepository::class);
+        $this->app->bind(SubZoneRepositoryInterface::class, SubZoneRepository::class);
     }
 
     /**
