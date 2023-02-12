@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Amounts\CurrentController;
 use App\Http\Controllers\Amounts\HumidityController;
 use App\Http\Controllers\Amounts\TemperatureController;
 use App\Http\Controllers\Device\DeviceController;
@@ -37,3 +38,8 @@ Route::resource('humidities', HumidityController::class)->except('create', 'dele
 Route::get('humidities/{start}/{end}', [HumidityController::class, 'getHumidityByDate']);
 Route::get('humidities/{deviceId}', [HumidityController::class, 'getHumidityByDeviceId']);
 Route::get('humidities/datetime/{date}/{timeRange}', [HumidityController::class, 'getHumidityByDateTime']);
+
+Route::resource('currents', CurrentController::class)->except('create', 'delete', 'update', 'edit', 'show');
+Route::get('currents/{start}/{end}', [CurrentController::class, 'getCurrentByDate']);
+Route::get('currents/{deviceId}', [CurrentController::class, 'getCurrentByDeviceId']);
+Route::get('currents/datetime/{date}/{timeRange}', [CurrentController::class, 'getCurrentByDateTime']);

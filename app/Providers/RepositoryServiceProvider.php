@@ -2,12 +2,14 @@
 
 namespace App\Providers;
 
+use App\Interfaces\CurrentRepositoryInterface;
 use App\Interfaces\DeviceRepositoryInterface;
 use App\Interfaces\HumidityRepositoryInterface;
 use App\Interfaces\SubZoneRepositoryInterface;
 use App\Interfaces\TemperatureRepositoryInterface;
 use App\Interfaces\UserRepositoryInterface;
 use App\Interfaces\ZoneRepositoryInterface;
+use App\Repositories\CurrentRepository;
 use App\Repositories\DeviceRepository;
 use App\Repositories\HumidityRepository;
 use App\Repositories\SubZoneRepository;
@@ -31,6 +33,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(DeviceRepositoryInterface::class, DeviceRepository::class);
         $this->app->bind(TemperatureRepositoryInterface::class, TemperatureRepository::class);
         $this->app->bind(HumidityRepositoryInterface::class, HumidityRepository::class);
+        $this->app->bind(CurrentRepositoryInterface::class, CurrentRepository::class);
     }
 
     /**

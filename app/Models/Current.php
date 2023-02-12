@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Current extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'value',
+        'device_id',
+        'detail',
+    ];
 }
