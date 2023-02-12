@@ -61,10 +61,10 @@ class TemperatureController extends Controller
         ]);
     }
 
-    public function getTemperatureByDateTime($date, $startTime, $endTime)
+    public function getTemperatureByDateTime($date, $timeRange)
     {
         return response()->json([
-            'Temperatures' => $this->temperatureRepository->getTemperatureByDateTime($date, $startTime, $endTime),
+            'Temperatures' => $this->temperatureRepository->getTemperatureByDateTime($date, $timeRange),
         ]);
     }
 }

@@ -10,6 +10,6 @@ interface TemperatureRepositoryInterface
     public function getAllTemperatures();
     public function getTemperatureByDate($startDate, $endDate);
     public function getTemperatureByDeviceId($deviceId);
-    public function getTemperatureByDateTime($date, $startTime, $endTime);
+    public function getTemperatureByDateTime($date, $timeRange);
     public function createTemperature(Request $request);
 }

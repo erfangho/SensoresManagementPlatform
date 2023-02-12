@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Amounts\HumidityController;
 use App\Http\Controllers\Amounts\TemperatureController;
 use App\Http\Controllers\Device\DeviceController;
 use App\Http\Controllers\Zone\SubZoneController;
@@ -26,7 +27,13 @@ Route::resource('users', UserController::class)->except('create');
 Route::resource('zones', ZoneController::class)->except('create');
 Route::resource('sub-zones', SubZoneController::class)->except('create');
 Route::resource('devices', DeviceController::class)->except('create');
+
 Route::resource('temperatures', TemperatureController::class)->except('create', 'delete', 'update', 'edit', 'show');
 Route::get('temperatures/{start}/{end}', [TemperatureController::class, 'getTemperatureByDate']);
 Route::get('temperatures/{deviceId}', [TemperatureController::class, 'getTemperatureByDeviceId']);
-Route::get('temperatures/{date}/{startTime}/{endTime}', [TemperatureController::class, 'getTemperatureByDateTime']);
+Route::get('temperatures/datetime/{date}/{timeRange}', [TemperatureController::class, 'getTemperatureByDateTime']);
+
+Route::resource('humidities', HumidityController::class)->except('create', 'delete', 'update', 'edit', 'show');
+Route::get('humidities/{start}/{end}', [HumidityController::class, 'getHumidityByDate']);
+Route::get('humidities/{deviceId}', [HumidityController::class, 'getHumidityByDeviceId']);
+Route::get('humidities/datetime/{date}/{timeRange}', [HumidityController::class, 'getHumidityByDateTime']);

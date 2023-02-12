@@ -59,10 +59,12 @@ class TemperatureRepository implements TemperatureRepositoryInterface
         return $temperatures;
     }
 
-    public function getTemperatureByDateTime($date, $startTime, $endTime)
+    public function getTemperatureByDateTime($date, $timeRange)
     {
-        $startDateTime = Carbon::create($date . ' ' . $startTime)->format("Y-m-d H:i:s");
-        $endDateTime = Carbon::create($date . ' ' . $endTime)->format("Y-m-d H:i:s");
+        $time = explode('-', $timeRange);
+
+        $startDateTime = Carbon::create($date . ' ' . $time['0'])->format("Y-m-d H:i:s");
+        $endDateTime = Carbon::create($date . ' ' . $time['1'])->format("Y-m-d H:i:s");
 
         $temperatures = Temperature::whereBetween('created_at', [$startDateTime, $endDateTime])
             ->get();
