@@ -18,29 +18,40 @@ class HumidityRepository implements HumidityRepositoryInterface
 
     public function createHumidity(Request $request)
     {
+        $apiKey = $request['api_key'];
+
         $humidityDetails = $request->only([
             'value',
             'device_id',
             'detail',
         ]);
 
-        $Humidity = Humidity::create($humidityDetails);
+        $device = Device::findOrFail($humidityDetails['device_id']);
 
-        $keyNameRedisDate = Carbon::createFromFormat('Y-m-d H:i:s', $Humidity['created_at'])
-                            ->format('Y-m-d');
+        if ($device['api_key'] != $apiKey) {
+            return [
+                'message' => 'API key is not correct',
+            ];
+        } else {
+            $Humidity = Humidity::create($humidityDetails);
 
-        $keyNameRedisHour = Carbon::createFromFormat('Y-m-d H:i:s', $Humidity['created_at'])
-                            ->format('H:i');
+            $keyNameRedisDate = Carbon::createFromFormat('Y-m-d H:i:s', $Humidity['created_at'])
+                ->format('Y-m-d');
 
-        Redis::set('Humidities:' . $keyNameRedisDate . ':' . $keyNameRedisHour, json_encode([
-            'device_id' => $Humidity['device_id'],
-            'value' => $Humidity['value'],
-        ]));
+            $keyNameRedisHour = Carbon::createFromFormat('Y-m-d H:i:s', $Humidity['created_at'])
+                ->format('H:i');
 
-        return [
-            'Humidity' => $Humidity,
-            'message' => 'Humidity created successfully',
-        ];
+            Redis::set('Humidities:' . $keyNameRedisDate . ':' . $keyNameRedisHour, json_encode([
+                'device_id' => $Humidity['device_id'],
+                'value' => $Humidity['value'],
+            ]));
+
+            // TODO this response is only for stage, for production layer we should return device orders
+            return [
+                'Humidity' => $Humidity,
+                'message' => 'Humidity created successfully',
+            ];
+        }
     }
 
     public function getHumidityByDate($startDate, $endDate)

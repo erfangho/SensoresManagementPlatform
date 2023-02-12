@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('devices', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('api_key');
             $table->string('type')->nullable();
             $table->string('phone_number');
             $table->unsignedBigInteger('sub_zone_id');

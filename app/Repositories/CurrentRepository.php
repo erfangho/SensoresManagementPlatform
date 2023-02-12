@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Interfaces\CurrentRepositoryInterface;
 use App\Models\Current;
+use App\Models\Device;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
@@ -17,29 +18,40 @@ class CurrentRepository implements CurrentRepositoryInterface
 
     public function createCurrent(Request $request)
     {
+        $apiKey = $request['api_key'];
+
         $currentDetails = $request->only([
             'value',
             'device_id',
             'detail',
         ]);
 
-        $current = Current::create($currentDetails);
+        $device = Device::findOrFail($currentDetails['device_id']);
 
-        $keyNameRedisDate = Carbon::createFromFormat('Y-m-d H:i:s', $current['created_at'])
-            ->format('Y-m-d');
+        if ($device['api_key'] != $apiKey) {
+            return [
+                'message' => 'API key is not correct',
+            ];
+        } else {
+            $current = Current::create($currentDetails);
 
-        $keyNameRedisHour = Carbon::createFromFormat('Y-m-d H:i:s', $current['created_at'])
-            ->format('H:i');
+            $keyNameRedisDate = Carbon::createFromFormat('Y-m-d H:i:s', $current['created_at'])
+                ->format('Y-m-d');
 
-        Redis::set('Currents:' . $keyNameRedisDate . ':' . $keyNameRedisHour, json_encode([
-            'device_id' => $current['device_id'],
-            'value' => $current['value'],
-        ]));
+            $keyNameRedisHour = Carbon::createFromFormat('Y-m-d H:i:s', $current['created_at'])
+                ->format('H:i');
 
-        return [
-            'Current' => $current,
-            'message' => 'Current created successfully',
-        ];
+            Redis::set('Currents:' . $keyNameRedisDate . ':' . $keyNameRedisHour, json_encode([
+                'device_id' => $current['device_id'],
+                'value' => $current['value'],
+            ]));
+
+            // TODO this response is only for stage, for production layer we should return device orders
+            return [
+                'Current' => $current,
+                'message' => 'Current created successfully',
+            ];
+        }
     }
 
     public function getCurrentByDate($startDate, $endDate)

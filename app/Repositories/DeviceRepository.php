@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Interfaces\DeviceRepositoryInterface;
 use App\Models\Device;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class DeviceRepository implements DeviceRepositoryInterface
 {
@@ -39,6 +40,9 @@ class DeviceRepository implements DeviceRepositoryInterface
             'user_id',
             'detail',
         ]);
+
+        $deviceDetails['api_key'] = Str::random(12);
+//        dd($deviceDetails);
 
         return [
             'Device' => Device::create($deviceDetails),
