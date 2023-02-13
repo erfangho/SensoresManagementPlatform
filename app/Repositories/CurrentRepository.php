@@ -18,40 +18,30 @@ class CurrentRepository implements CurrentRepositoryInterface
 
     public function createCurrent(Request $request)
     {
-        $apiKey = $request['api_key'];
-
         $currentDetails = $request->only([
             'value',
             'device_id',
             'detail',
         ]);
 
-        $device = Device::findOrFail($currentDetails['device_id']);
+        $current = Current::create($currentDetails);
 
-        if ($device['api_key'] != $apiKey) {
-            return [
-                'message' => 'API key is not correct',
-            ];
-        } else {
-            $current = Current::create($currentDetails);
+        $keyNameRedisDate = Carbon::createFromFormat('Y-m-d H:i:s', $current['created_at'])
+            ->format('Y-m-d');
 
-            $keyNameRedisDate = Carbon::createFromFormat('Y-m-d H:i:s', $current['created_at'])
-                ->format('Y-m-d');
+        $keyNameRedisHour = Carbon::createFromFormat('Y-m-d H:i:s', $current['created_at'])
+            ->format('H:i');
 
-            $keyNameRedisHour = Carbon::createFromFormat('Y-m-d H:i:s', $current['created_at'])
-                ->format('H:i');
+        Redis::set('Currents:' . $keyNameRedisDate . ':' . $keyNameRedisHour, json_encode([
+            'device_id' => $current['device_id'],
+            'value' => $current['value'],
+        ]));
 
-            Redis::set('Currents:' . $keyNameRedisDate . ':' . $keyNameRedisHour, json_encode([
-                'device_id' => $current['device_id'],
-                'value' => $current['value'],
-            ]));
-
-            // TODO this response is only for stage, for production layer we should return device orders
-            return [
-                'Current' => $current,
-                'message' => 'Current created successfully',
-            ];
-        }
+        // TODO this response is only for stage, for production layer we should return device orders
+        return [
+            'Current' => $current,
+            'message' => 'Current created successfully',
+        ];
     }
 
     public function getCurrentByDate($startDate, $endDate)

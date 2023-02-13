@@ -18,40 +18,30 @@ class TemperatureRepository implements TemperatureRepositoryInterface
 
     public function createTemperature(Request $request)
     {
-        $apiKey = $request['api_key'];
-
         $temperatureDetails = $request->only([
             'value',
             'device_id',
             'detail',
         ]);
 
-        $device = Device::findOrFail($temperatureDetails['device_id']);
+        $temperature = Temperature::create($temperatureDetails);
 
-        if ($device['api_key'] != $apiKey) {
-            return [
-                'message' => 'API key is not correct',
-            ];
-        } else {
-            $temperature = Temperature::create($temperatureDetails);
+        $keyNameRedisDate = Carbon::createFromFormat('Y-m-d H:i:s', $temperature['created_at'])
+            ->format('Y-m-d');
 
-            $keyNameRedisDate = Carbon::createFromFormat('Y-m-d H:i:s', $temperature['created_at'])
-                ->format('Y-m-d');
+        $keyNameRedisHour = Carbon::createFromFormat('Y-m-d H:i:s', $temperature['created_at'])
+            ->format('H:i');
 
-            $keyNameRedisHour = Carbon::createFromFormat('Y-m-d H:i:s', $temperature['created_at'])
-                ->format('H:i');
+        Redis::set('Tepmerature:' . $keyNameRedisDate . ':' . $keyNameRedisHour, json_encode([
+            'device_id' => $temperature['device_id'],
+            'value' => $temperature['value'],
+        ]));
 
-            Redis::set('Tepmerature:' . $keyNameRedisDate . ':' . $keyNameRedisHour, json_encode([
-                'device_id' => $temperature['device_id'],
-                'value' => $temperature['value'],
-            ]));
-
-            // TODO this response is only for stage, for production layer we should return device orders
-            return [
-                'Temperature' => $temperature,
-                'message' => 'Temperature created successfully',
-            ];
-        }
+        // TODO this response is only for stage, for production layer we should return device orders
+        return [
+            'Temperature' => $temperature,
+            'message' => 'Temperature created successfully',
+        ];
     }
 
     public function getTemperatureByDate($startDate, $endDate)
