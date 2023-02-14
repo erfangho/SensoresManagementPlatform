@@ -4,6 +4,7 @@ use App\Http\Controllers\Amounts\CurrentController;
 use App\Http\Controllers\Amounts\HumidityController;
 use App\Http\Controllers\Amounts\TemperatureController;
 use App\Http\Controllers\Device\DeviceController;
+use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\Zone\SubZoneController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Zone\ZoneController;
@@ -23,8 +24,12 @@ use Illuminate\Support\Facades\Route;
 //    Route::resource('users', UserController::class)->except('create');
 //});
 
+Route::post('login', [AuthController::class, 'login'])->name('login');
+Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::resource('users', UserController::class)->except('create');
+Route::resource('users', UserController::class)
+    ->except('create')
+    ->middleware('auth:sanctum');
 Route::resource('zones', ZoneController::class)->except('create');
 Route::resource('sub-zones', SubZoneController::class)->except('create');
 Route::resource('devices', DeviceController::class)->except('create');

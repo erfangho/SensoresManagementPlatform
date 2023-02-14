@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Interfaces\UserRepositoryInterface;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -41,6 +42,9 @@ class UserRepository implements UserRepositoryInterface
 
         $userDetails['role_id'] = (int)$userDetails['role_id'];
 
+        // TODO should we hash password in front side?
+        $userDetails['password'] = Hash::make($userDetails['password']);
+
         return [
             'user' => User::create($userDetails),
             'message' => 'user created successfully',
@@ -60,6 +64,9 @@ class UserRepository implements UserRepositoryInterface
         if (isset($newDetails['role_id'])) {
             $newDetails['role_id'] = (int)$newDetails['role_id'];
         }
+
+        // TODO should we hash password in front side?
+        $newDetails['password'] = Hash::make($newDetails['password']);
 
         if ($user->update($newDetails)) {
             return [
