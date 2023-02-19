@@ -37,6 +37,7 @@ Route::resource('devices', DeviceController::class)->except('create');
 //Route::resource('temperatures', TemperatureController::class)->except('create', 'delete', 'update', 'edit', 'show');
 
 Route::prefix('temperatures')->group(function () {
+    Route::get('/export-csv', [TemperatureController::class, 'exportTemperatureAsCsv']);
     Route::post('/', [TemperatureController::class, 'store'])->middleware('apikey');
     Route::get('/', [TemperatureController::class, 'index']);
     Route::get('/{start}/{end}', [TemperatureController::class, 'getTemperatureByDate']);
@@ -47,6 +48,7 @@ Route::prefix('temperatures')->group(function () {
 //Route::resource('humidities', HumidityController::class)->except('create', 'delete', 'update', 'edit', 'show');
 
 Route::prefix('humidities')->group(function () {
+    Route::get('/export-csv', [HumidityController::class, 'exportHumidityAsCsv']);
     Route::post('/', [HumidityController::class, 'store'])->middleware('apikey');
     Route::get('/', [HumidityController::class, 'index']);
     Route::get('/{start}/{end}', [HumidityController::class, 'getHumidityByDate']);
@@ -60,6 +62,7 @@ Route::prefix('humidities')->group(function () {
 
 
 Route::prefix('currents')->group(function () {
+    Route::get('/export-csv', [CurrentController::class, 'exportCurrentAsCsv']);
     Route::post('/', [CurrentController::class, 'store'])->middleware('apikey');
     Route::get('/', [CurrentController::class, 'index']);
     Route::get('/{start}/{end}', [CurrentController::class, 'getCurrentByDate']);

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AmountsRequests\StoreTemperatureRequest;
 use App\Interfaces\TemperatureRepositoryInterface;
 use App\Models\Temperature;
+use App\Services\ExportService;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class TemperatureController extends Controller
@@ -66,5 +67,17 @@ class TemperatureController extends Controller
         return response()->json([
             'Temperatures' => $this->temperatureRepository->getTemperatureByDateTime($date, $timeRange),
         ]);
+    }
+
+    public function exportTemperatureAsCsv()
+    {
+        $temperatures = Temperature::all();
+
+        $exportService = new ExportService();
+
+        return $exportService->exportCsv(
+            $temperatures,
+            'temperatures.csv',
+            ['value', 'device_id', 'detail', 'created_at']);
     }
 }

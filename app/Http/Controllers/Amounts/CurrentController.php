@@ -7,6 +7,8 @@ use App\Http\Requests\AmountsRequests\StoreCurrentRequest;
 use App\Http\Requests\UpdateCurrentRequest;
 use App\Interfaces\CurrentRepositoryInterface;
 use App\Models\Current;
+use App\Models\Temperature;
+use App\Services\ExportService;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class CurrentController extends Controller
@@ -67,5 +69,17 @@ class CurrentController extends Controller
         return response()->json([
             'Currents' => $this->currentRepository->getCurrentByDateTime($date, $timeRange),
         ]);
+    }
+
+    public function exportCurrentAsCsv()
+    {
+        $temperatures = Current::all();
+
+        $exportService = new ExportService();
+
+        return $exportService->exportCsv(
+            $temperatures,
+            'currents.csv',
+            ['value', 'device_id', 'detail', 'created_at']);
     }
 }

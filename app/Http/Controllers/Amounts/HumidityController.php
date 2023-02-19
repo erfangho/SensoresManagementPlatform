@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AmountsRequests\StoreHumidityRequest;
 use App\Interfaces\HumidityRepositoryInterface;
 use App\Models\Humidity;
+use App\Models\Temperature;
+use App\Services\ExportService;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class HumidityController extends Controller
@@ -66,5 +68,17 @@ class HumidityController extends Controller
         return response()->json([
             'Humidities' => $this->humidityRepository->getHumidityByDateTime($date, $timeRange),
         ]);
+    }
+
+    public function exportHumidityAsCsv()
+    {
+        $temperatures = Humidity::all();
+
+        $exportService = new ExportService();
+
+        return $exportService->exportCsv(
+            $temperatures,
+            'Humidities.csv',
+            ['value', 'device_id', 'detail', 'created_at']);
     }
 }
