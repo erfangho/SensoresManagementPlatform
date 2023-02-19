@@ -7,6 +7,7 @@ use App\Http\Requests\DeviceRequests\StoreDeviceRequest;
 use App\Http\Requests\DeviceRequests\UpdateDeviceRequest;
 use App\Interfaces\DeviceRepositoryInterface;
 use App\Models\Device;
+use App\Services\DeviceOnlineStatusService;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class DeviceController extends Controller
@@ -92,5 +93,17 @@ class DeviceController extends Controller
         return response()->json(
             $this->deviceRepository->deleteDevice($device)
             , ResponseAlias::HTTP_OK);
+    }
+
+    public function getDevicesStatus()
+    {
+        $devices = Device::all();
+
+        $deviceOnlineStatusService = new DeviceOnlineStatusService();
+
+        return response()->json(
+            $deviceOnlineStatusService->getStatusFromCreatedTime($devices),
+            ResponseAlias::HTTP_OK
+        );
     }
 }
