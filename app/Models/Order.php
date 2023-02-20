@@ -14,5 +14,6 @@ class Order extends Model
         'device_id',
         'temperature',
         'power',
+        'status',
     ];
 }

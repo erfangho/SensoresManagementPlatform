@@ -32,10 +32,10 @@ class CurrentRepository implements CurrentRepositoryInterface
         $keyNameRedisHour = Carbon::createFromFormat('Y-m-d H:i:s', $current['created_at'])
             ->format('H:i');
 
-        Redis::set('Currents:' . $keyNameRedisDate . ':' . $keyNameRedisHour, json_encode([
-            'device_id' => $current['device_id'],
-            'value' => $current['value'],
-        ]));
+//        Redis::set('Currents:' . $keyNameRedisDate . ':' . $keyNameRedisHour, json_encode([
+//            'device_id' => $current['device_id'],
+//            'value' => $current['value'],
+//        ]));
 
         // TODO this response is only for stage, for production layer we should return device orders
         return [

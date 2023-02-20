@@ -4,6 +4,7 @@ use App\Http\Controllers\Amounts\CurrentController;
 use App\Http\Controllers\Amounts\HumidityController;
 use App\Http\Controllers\Amounts\TemperatureController;
 use App\Http\Controllers\Device\DeviceController;
+use App\Http\Controllers\Device\OrderController;
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\Zone\SubZoneController;
 use App\Http\Controllers\User\UserController;
@@ -71,3 +72,7 @@ Route::prefix('currents')->group(function () {
     Route::get('/{deviceId}', [CurrentController::class, 'getCurrentByDeviceId']);
     Route::get('/datetime/{date}/{timeRange}', [CurrentController::class, 'getCurrentByDateTime']);
 });
+
+
+Route::get('/orders', [OrderController::class, 'index']);
+Route::post('/orders', [OrderController::class, 'store']);

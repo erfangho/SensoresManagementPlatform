@@ -19,8 +19,9 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('device_id');
             $table->foreign('device_id')->references('id')->on('devices')->onDelete('cascade');
-            $table->string('temperature');
-            $table->string('power');
+            $table->string('temperature')->nullable();
+            $table->string('power')->nullable();
+            $table->string('status');
             $table->timestamps();
         });
     }
