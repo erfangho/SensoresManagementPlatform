@@ -8,6 +8,7 @@ use App\Interfaces\HumidityRepositoryInterface;
 use App\Models\Humidity;
 use App\Models\Temperature;
 use App\Services\ExportService;
+use App\Services\OrderReportService;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class HumidityController extends Controller
@@ -39,9 +40,25 @@ class HumidityController extends Controller
      */
     public function store(StoreHumidityRequest $request)
     {
-        return response()->json(
-            $this->humidityRepository->createHumidity($request)
-            , ResponseAlias::HTTP_CREATED);
+        if ($this->humidityRepository->createHumidity($request)) {
+            $deviceId = $request['device_id'];
+
+            $order = new OrderReportService();
+            $getStandByOrders = $order->getStandByOrders($deviceId);
+
+            if (isset($getStandByOrders) != null) {
+                $order = $getStandByOrders->getData();
+            }
+
+            return response()->json(
+                $order,
+                ResponseAlias::HTTP_CREATED);
+        } else {
+            return response()->json(
+                $this->humidityRepository->createHumidity($request),
+                ResponseAlias::HTTP_BAD_GATEWAY
+            );
+        }
     }
 
     /**

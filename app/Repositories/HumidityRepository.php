@@ -32,10 +32,10 @@ class HumidityRepository implements HumidityRepositoryInterface
         $keyNameRedisHour = Carbon::createFromFormat('Y-m-d H:i:s', $Humidity['created_at'])
             ->format('H:i');
 
-        Redis::set('Humidities:' . $keyNameRedisDate . ':' . $keyNameRedisHour, json_encode([
-            'device_id' => $Humidity['device_id'],
-            'value' => $Humidity['value'],
-        ]));
+//        Redis::set('Humidities:' . $keyNameRedisDate . ':' . $keyNameRedisHour, json_encode([
+//            'device_id' => $Humidity['device_id'],
+//            'value' => $Humidity['value'],
+//        ]));
 
         // TODO this response is only for stage, for production layer we should return device orders
         return [

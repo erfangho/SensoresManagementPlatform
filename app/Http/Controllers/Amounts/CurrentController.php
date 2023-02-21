@@ -4,11 +4,12 @@ namespace App\Http\Controllers\Amounts;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AmountsRequests\StoreCurrentRequest;
-use App\Http\Requests\UpdateCurrentRequest;
 use App\Interfaces\CurrentRepositoryInterface;
 use App\Models\Current;
+use App\Models\Order;
 use App\Models\Temperature;
 use App\Services\ExportService;
+use App\Services\OrderReportService;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class CurrentController extends Controller
@@ -40,9 +41,26 @@ class CurrentController extends Controller
      */
     public function store(StoreCurrentRequest $request)
     {
-        return response()->json(
-            $this->currentRepository->createCurrent($request)
-            , ResponseAlias::HTTP_CREATED);
+        if ($this->currentRepository->createCurrent($request)) {
+            $deviceId = $request['device_id'];
+
+            $order = new OrderReportService();
+            $getStandByOrders = $order->getStandByOrders($deviceId);
+
+            if (isset($getStandByOrders) != null) {
+                $order = $getStandByOrders->getData();
+            }
+
+            return response()->json(
+                $order,
+                ResponseAlias::HTTP_CREATED
+            );
+        } else {
+            return response()->json(
+                $this->currentRepository->createCurrent($request),
+                ResponseAlias::HTTP_BAD_GATEWAY
+            );
+        }
     }
 
     /**

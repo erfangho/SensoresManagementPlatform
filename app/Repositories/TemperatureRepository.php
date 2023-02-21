@@ -32,10 +32,10 @@ class TemperatureRepository implements TemperatureRepositoryInterface
         $keyNameRedisHour = Carbon::createFromFormat('Y-m-d H:i:s', $temperature['created_at'])
             ->format('H:i');
 
-        Redis::set('Tepmerature:' . $keyNameRedisDate . ':' . $keyNameRedisHour, json_encode([
-            'device_id' => $temperature['device_id'],
-            'value' => $temperature['value'],
-        ]));
+//        Redis::set('Tepmerature:' . $keyNameRedisDate . ':' . $keyNameRedisHour, json_encode([
+//            'device_id' => $temperature['device_id'],
+//            'value' => $temperature['value'],
+//        ]));
 
         // TODO this response is only for stage, for production layer we should return device orders
         return [

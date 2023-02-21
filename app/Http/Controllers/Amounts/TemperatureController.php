@@ -7,6 +7,7 @@ use App\Http\Requests\AmountsRequests\StoreTemperatureRequest;
 use App\Interfaces\TemperatureRepositoryInterface;
 use App\Models\Temperature;
 use App\Services\ExportService;
+use App\Services\OrderReportService;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class TemperatureController extends Controller
@@ -38,9 +39,25 @@ class TemperatureController extends Controller
      */
     public function store(StoreTemperatureRequest $request)
     {
-        return response()->json(
-            $this->temperatureRepository->createTemperature($request)
-            , ResponseAlias::HTTP_CREATED);
+        if ($this->temperatureRepository->createTemperature($request)) {
+            $deviceId = $request['device_id'];
+
+            $order = new OrderReportService();
+            $getStandByOrders = $order->getStandByOrders($deviceId);
+
+            if (isset($getStandByOrders) != null) {
+                $order = $getStandByOrders->getData();
+            }
+
+            return response()->json(
+                $order,
+                ResponseAlias::HTTP_CREATED);
+        } else {
+            return response()->json(
+                $this->temperatureRepository->createTemperature($request),
+                ResponseAlias::HTTP_BAD_GATEWAY
+            );
+        }
     }
 
     /**

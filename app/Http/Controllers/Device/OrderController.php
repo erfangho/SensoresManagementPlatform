@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Device;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DeviceRequests\StoreOrderRequest;
 use App\Models\Order;
+use App\Services\OrderReportService;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
