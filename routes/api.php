@@ -3,6 +3,7 @@
 use App\Http\Controllers\Amounts\CurrentController;
 use App\Http\Controllers\Amounts\HumidityController;
 use App\Http\Controllers\Amounts\TemperatureController;
+use App\Http\Controllers\Amounts\VoltageController;
 use App\Http\Controllers\Device\DeviceController;
 use App\Http\Controllers\Device\OrderController;
 use App\Http\Controllers\User\AuthController;
@@ -71,6 +72,16 @@ Route::prefix('currents')->group(function () {
     Route::get('/{start}/{end}', [CurrentController::class, 'getCurrentByDate']);
     Route::get('/{deviceId}', [CurrentController::class, 'getCurrentByDeviceId']);
     Route::get('/datetime/{date}/{timeRange}', [CurrentController::class, 'getCurrentByDateTime']);
+});
+
+
+Route::prefix('voltages')->group(function () {
+    Route::get('/export-csv', [VoltageController::class, 'exportVoltageAsCsv']);
+    Route::post('/', [VoltageController::class, 'store'])->middleware('apikey');
+    Route::get('/', [VoltageController::class, 'index']);
+    Route::get('/{start}/{end}', [VoltageController::class, 'getVoltageByDate']);
+    Route::get('/{deviceId}', [VoltageController::class, 'getVoltageByDeviceId']);
+    Route::get('/datetime/{date}/{timeRange}', [VoltageController::class, 'getVoltageByDateTime']);
 });
 
 
