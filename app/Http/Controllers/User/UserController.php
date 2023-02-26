@@ -69,9 +69,15 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return response()->json([
-            'user' => $this->userRepository->getUser($user),
-        ]);
+        if (Gate::allows('is-admin')) {
+            return response()->json([
+                'user' => $this->userRepository->getUser($user),
+            ]);
+        }  else {
+            return response()->json([
+                'message' => 'you dont have access to show user',
+            ], ResponseAlias::HTTP_FORBIDDEN);
+        }
     }
 
     /**
