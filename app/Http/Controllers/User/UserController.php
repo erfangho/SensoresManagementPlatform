@@ -8,6 +8,7 @@ use App\Http\Requests\UserRequests\UpdateUserRequest;
 use App\Interfaces\UserRepositoryInterface;
 use App\Models\User;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class UserController extends Controller
@@ -49,9 +50,15 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        return response()->json(
-            $this->userRepository->createUser($request)
-        , ResponseAlias::HTTP_CREATED);
+        if (Gate::allows('is-admin')) {
+            return response()->json(
+                $this->userRepository->createUser($request)
+                , ResponseAlias::HTTP_CREATED);
+        } else {
+            return response()->json([
+                'message' => 'you dont have access to create new user',
+            ], ResponseAlias::HTTP_FORBIDDEN);
+        }
     }
 
     /**
