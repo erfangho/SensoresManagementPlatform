@@ -30,7 +30,7 @@ class UserController extends Controller
     {
         $currentUser = auth()->user();
 //        dd(config('constants.roles.admin'));
-        if ($currentUser['role_id'] != config('constants.roles.admin')) {
+        if (!Gate::allows('is-admin')) {
             return response()->json([
                 'message' => 'you dont have access to the users list',
             ], ResponseAlias::HTTP_FORBIDDEN);
