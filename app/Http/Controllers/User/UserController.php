@@ -100,9 +100,15 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        return response()->json(
-            $this->userRepository->updateUser($user, $request)
-        , ResponseAlias::HTTP_OK);
+        if (Gate::allows('is-admin')) {
+            return response()->json(
+                $this->userRepository->updateUser($user, $request)
+                , ResponseAlias::HTTP_OK);
+        } else {
+            return response()->json([
+                'message' => 'you dont have access to update user',
+            ], ResponseAlias::HTTP_FORBIDDEN);
+        }
     }
 
     /**
