@@ -24,7 +24,7 @@ class DeviceRepository implements DeviceRepositoryInterface
     {
         if ($device->deleteOrFail()) {
             return [
-                'message' => 'Device deleted successfully',
+                'message' => 'دیوایس با موفقیت حذف شد',
             ];
         } else {
             return $device->deleteOrFail();
@@ -46,7 +46,7 @@ class DeviceRepository implements DeviceRepositoryInterface
 
         return [
             'Device' => Device::create($deviceDetails),
-            'message' => 'Device created successfully',
+            'message' => 'دیوایس با موفقیت ساخته شد',
         ];
     }
 
@@ -63,7 +63,7 @@ class DeviceRepository implements DeviceRepositoryInterface
         if ($device->update($newDetails)) {
             return [
                 'Device' => $device,
-                'message' => 'Device updated successfully',
+                'message' => 'دیوایس با موفقیت به روزرسانی شد',
             ];
         } else {
             return $device->update($newDetails);

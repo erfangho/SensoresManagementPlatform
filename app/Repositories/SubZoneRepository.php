@@ -23,7 +23,7 @@ class SubZoneRepository implements SubZoneRepositoryInterface
     {
         if ($subZone->deleteOrFail()) {
             return [
-                'message' => 'SubZone deleted successfully',
+                'message' => 'زیر ناحیه با موفقیت حذف شد',
             ];
         } else {
             return $subZone->deleteOrFail();
@@ -40,7 +40,7 @@ class SubZoneRepository implements SubZoneRepositoryInterface
 
         return [
             'SubZone' => SubZone::create($subZoneDetails),
-            'message' => 'SubZone created successfully',
+            'message' => 'زیر ناحیه با موفقیت ساخته شد',
         ];
     }
 
@@ -55,7 +55,7 @@ class SubZoneRepository implements SubZoneRepositoryInterface
         if ($subZone->update($newDetails)) {
             return [
                 'SubZone' => $subZone,
-                'message' => 'SubZone updated successfully',
+                'message' => 'زیر ناحیه با موفقیت به روز رسانی شد',
             ];
         } else {
             return $subZone->update($newDetails);

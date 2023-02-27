@@ -23,7 +23,7 @@ class UserRepository implements UserRepositoryInterface
     {
         if ($user->deleteOrFail()) {
             return [
-                'message' => 'user deleted successfully',
+                'message' => 'کاربر با موفقیت حذف شد',
             ];
         } else {
             return $user->deleteOrFail();
@@ -47,7 +47,7 @@ class UserRepository implements UserRepositoryInterface
 
         return [
             'user' => User::create($userDetails),
-            'message' => 'user created successfully',
+            'message' => 'کاربر با موفقیت ساخته شد',
         ];
     }
 
@@ -71,7 +71,7 @@ class UserRepository implements UserRepositoryInterface
         if ($user->update($newDetails)) {
             return [
                 'user' => $user,
-                'message' => 'user updated successfully',
+                'message' => 'کاربر با موفقیت به روز رسانی شد',
             ];
         } else {
             return $user->update($newDetails);

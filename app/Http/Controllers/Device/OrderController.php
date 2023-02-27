@@ -32,7 +32,7 @@ class OrderController extends Controller
 
         return response()->json(
             [
-                'message' => 'order submitted successfully',
+                'message' => 'دستورات با موفقیت ثبت شد',
                 'data' => [
                     'user_id' => $orderDetails['user_id'],
                     'device_id' => $orderDetails['device_id'],

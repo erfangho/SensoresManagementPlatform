@@ -23,7 +23,7 @@ class ZoneRepository implements ZoneRepositoryInterface
     {
         if ($zone->deleteOrFail()) {
             return [
-                'message' => 'Zone deleted successfully',
+                'message' => 'ناحیه با موفقیت حذف شد',
             ];
         } else {
             return $zone->deleteOrFail();
@@ -40,7 +40,7 @@ class ZoneRepository implements ZoneRepositoryInterface
 
         return [
             'Zone' => Zone::create($zoneDetails),
-            'message' => 'Zone created successfully',
+            'message' => 'ناحیه با موفقیت ساخته شد',
         ];
     }
 
@@ -55,7 +55,7 @@ class ZoneRepository implements ZoneRepositoryInterface
         if ($zone->update($newDetails)) {
             return [
                 'Zone' => $zone,
-                'message' => 'Zone updated successfully',
+                'message' => 'ناحیه با موفقیت به روز رسانی شد',
             ];
         } else {
             return $zone->update($newDetails);

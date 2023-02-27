@@ -32,9 +32,9 @@ class AuthController extends Controller
         $token = PersonalAccessToken::findToken($accessToken);
 
         if (isset($token) and $token->delete()) {
-            return response()->json(['message' => 'user logged out successfully']);
+            return response()->json(['message' => 'کاربر با موفقیت خارج شد']);
         }
 
-        return response()->json(['message' => 'something went wrong'], ResponseAlias::HTTP_NOT_FOUND);
+        return response()->json(['message' => 'مشکلی پیش آمده'], ResponseAlias::HTTP_NOT_FOUND);
     }
 }

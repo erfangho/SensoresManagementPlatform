@@ -32,7 +32,7 @@ class UserController extends Controller
 //        dd(config('constants.roles.admin'));
         if (!Gate::allows('is-admin')) {
             return response()->json([
-                'message' => 'you dont have access to the users list',
+                'message' => 'شما دسترسی به این قسمت ندارید',
             ], ResponseAlias::HTTP_FORBIDDEN);
         }
 
@@ -56,7 +56,7 @@ class UserController extends Controller
                 , ResponseAlias::HTTP_CREATED);
         } else {
             return response()->json([
-                'message' => 'you dont have access to create new user',
+                'message' => 'شما دسترسی به این قسمت ندارید',
             ], ResponseAlias::HTTP_FORBIDDEN);
         }
     }
@@ -75,7 +75,7 @@ class UserController extends Controller
             ]);
         }  else {
             return response()->json([
-                'message' => 'you dont have access to show user',
+                'message' => 'شما دسترسی به این قسمت ندارید',
             ], ResponseAlias::HTTP_FORBIDDEN);
         }
     }
@@ -106,7 +106,7 @@ class UserController extends Controller
                 , ResponseAlias::HTTP_OK);
         } else {
             return response()->json([
-                'message' => 'you dont have access to update user',
+                'message' => 'شما دسترسی به این قسمت ندارید',
             ], ResponseAlias::HTTP_FORBIDDEN);
         }
     }
@@ -125,7 +125,7 @@ class UserController extends Controller
                 , ResponseAlias::HTTP_OK);
         } else {
             return response()->json([
-                'message' => 'you dont have access to delete user',
+                'message' => 'شما دسترسی به این قسمت ندارید',
             ], ResponseAlias::HTTP_FORBIDDEN);
         }
     }
