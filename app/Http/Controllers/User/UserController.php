@@ -129,4 +129,11 @@ class UserController extends Controller
             ], ResponseAlias::HTTP_FORBIDDEN);
         }
     }
+
+    public function getUserByToken()
+    {
+        $user = auth()->user();
+
+        return response()->json($user, ResponseAlias::HTTP_OK);
+    }
 }

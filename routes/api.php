@@ -32,6 +32,9 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 Route::resource('users', UserController::class)
     ->except('create')
     ->middleware('auth:sanctum');
+Route::get('user/info', [UserController::class, 'getUserByToken'])->middleware('auth:sanctum');;
+
+
 Route::resource('zones', ZoneController::class)->except('create');
 Route::resource('sub-zones', SubZoneController::class)->except('create');
 Route::get('devices/status', [DeviceController::class, 'getDevicesStatus']);
