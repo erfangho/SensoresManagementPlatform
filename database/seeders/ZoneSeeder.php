@@ -19,6 +19,7 @@ class ZoneSeeder extends Seeder
     public function run()
     {
         DB::table('zones')->insert([
+            'user_id' => 1,
             'name' => 'bimarestan motahari',
             'address' => 'kashani, nabshe bakeri',
             'detail' => null,
@@ -28,6 +29,7 @@ class ZoneSeeder extends Seeder
         ]);
 
         DB::table('zones')->insert([
+            'user_id' => 1,
             'name' => 'daneshgah sanati',
             'address' => 'jadde band',
             'detail' => null,

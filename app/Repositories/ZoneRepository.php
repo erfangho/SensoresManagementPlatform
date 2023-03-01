@@ -30,9 +30,13 @@ class ZoneRepository implements ZoneRepositoryInterface
         }
     }
 
-    public function createZone(Request $request)
+    public function createZone(Request $request, $user)
     {
-        $zoneDetails = $request->only([
+        $zoneDetails = [
+            'user_id' => $user['id'],
+        ];
+
+        $zoneDetails += $request->only([
             'name',
             'address',
             'detail',

@@ -10,6 +10,6 @@ interface SubZoneRepositoryInterface
     public function getAllSubZones();
     public function getSubZone(SubZone $subZone);
     public function deleteSubZone(SubZone $subZone);
-    public function createSubZone(Request $request);
+    public function createSubZone(Request $request, $user);
     public function updateSubZone(SubZone $subZone, Request $request);
 }

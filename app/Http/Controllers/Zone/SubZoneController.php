@@ -38,8 +38,10 @@ class SubZoneController extends Controller
      */
     public function store(StoreSubZoneRequest $request)
     {
+        $user = auth()->user();
+
         return response()->json(
-            $this->subZoneRepository->createSubZone($request)
+            $this->subZoneRepository->createSubZone($request, $user)
             , ResponseAlias::HTTP_CREATED);
     }
 
@@ -76,9 +78,18 @@ class SubZoneController extends Controller
      */
     public function update(UpdateSubZoneRequest $request, SubZone $subZone)
     {
-        return response()->json(
-            $this->subZoneRepository->updateSubZone($subZone, $request)
-            , ResponseAlias::HTTP_OK);
+
+        $user = auth()->user();
+
+        if ($user['role_id'] == 1 or $subZone['user_id'] == $user['id']) {
+            return response()->json(
+                $this->subZoneRepository->updateSubZone($subZone, $request)
+                , ResponseAlias::HTTP_OK);
+        } else {
+            return response()->json(
+                ['message' => 'شما دسترسی لازم برای ایجاد تغییر در این زیر ناحیه را ندارید']
+                , ResponseAlias::HTTP_FORBIDDEN);
+        }
     }
 
     /**

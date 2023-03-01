@@ -10,6 +10,6 @@ interface ZoneRepositoryInterface
     public function getAllZones();
     public function getZone(Zone $Zone);
     public function deleteZone(Zone $Zone);
-    public function createZone(Request $request);
+    public function createZone(Request $request, $user);
     public function updateZone(Zone $Zone, Request $request);
 }

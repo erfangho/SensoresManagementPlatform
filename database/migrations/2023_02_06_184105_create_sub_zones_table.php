@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('sub_zones', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('zone_id');
             $table->foreign('zone_id')->references('id')->on('zones')->onDelete('cascade');
             $table->string('detail')->nullable();

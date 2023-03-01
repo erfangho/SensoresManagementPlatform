@@ -38,8 +38,10 @@ class ZoneController extends Controller
      */
     public function store(StoreZoneRequest $request)
     {
+        $user = auth()->user();
+
         return response()->json(
-            $this->zoneRepository->createZone($request)
+            $this->zoneRepository->createZone($request, $user)
             , ResponseAlias::HTTP_CREATED);
     }
 
@@ -76,9 +78,17 @@ class ZoneController extends Controller
      */
     public function update(UpdateZoneRequest $request, Zone $zone)
     {
-        return response()->json(
-            $this->zoneRepository->updateZone($zone, $request)
-            , ResponseAlias::HTTP_OK);
+        $user = auth()->user();
+
+        if ($user['role_id'] == 1 or $zone['user_id'] == $user['id']) {
+            return response()->json(
+                $this->zoneRepository->updateZone($zone, $request)
+                , ResponseAlias::HTTP_OK);
+        } else {
+            return response()->json(
+                ['message' => 'شما دسترسی لازم برای ایجاد تغییر در این ناحیه را ندارید']
+                , ResponseAlias::HTTP_FORBIDDEN);
+        }
     }
 
     /**

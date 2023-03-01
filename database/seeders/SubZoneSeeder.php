@@ -18,6 +18,7 @@ class SubZoneSeeder extends Seeder
     {
         DB::table('sub_zones')->insert([
             'name' => 'daftare amoozesh',
+            'user_id' => 1,
             'zone_id' => 2,
             'detail' => null,
             'created_at' => Carbon::now(),
@@ -27,6 +28,7 @@ class SubZoneSeeder extends Seeder
 
         DB::table('sub_zones')->insert([
             'name' => 'azmayeshgah 2',
+            'user_id' => 2,
             'zone_id' => 1,
             'detail' => null,
             'created_at' => Carbon::now(),

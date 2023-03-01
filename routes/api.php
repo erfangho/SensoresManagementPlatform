@@ -35,10 +35,10 @@ Route::resource('users', UserController::class)
 Route::get('user/info', [UserController::class, 'getUserByToken'])->middleware('auth:sanctum');;
 
 
-Route::resource('zones', ZoneController::class)->except('create');
-Route::resource('sub-zones', SubZoneController::class)->except('create');
+Route::resource('zones', ZoneController::class)->except('create')->middleware('auth:sanctum');
+Route::resource('sub-zones', SubZoneController::class)->except('create')->middleware('auth:sanctum');
 Route::get('devices/status', [DeviceController::class, 'getDevicesStatus']);
-Route::resource('devices', DeviceController::class)->except('create');
+Route::resource('devices', DeviceController::class)->except('create')->middleware('auth:sanctum');
 
 
 //Route::resource('temperatures', TemperatureController::class)->except('create', 'delete', 'update', 'edit', 'show');

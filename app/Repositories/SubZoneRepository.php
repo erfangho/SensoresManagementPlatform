@@ -30,9 +30,13 @@ class SubZoneRepository implements SubZoneRepositoryInterface
         }
     }
 
-    public function createSubZone(Request $request)
+    public function createSubZone(Request $request , $user)
     {
-        $subZoneDetails = $request->only([
+        $subZoneDetails = [
+            'user_id' => $user['id'],
+        ];
+
+        $subZoneDetails += $request->only([
             'name',
             'zone_id',
             'detail',

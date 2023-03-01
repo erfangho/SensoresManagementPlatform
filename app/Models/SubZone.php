@@ -11,6 +11,7 @@ class SubZone extends Model
 
     protected $fillable = [
         'name',
+        'user_id',
         'zone_id',
         'detail',
     ];
