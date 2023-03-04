@@ -65,8 +65,9 @@ class UserRepository implements UserRepositoryInterface
             $newDetails['role_id'] = (int)$newDetails['role_id'];
         }
 
-        // TODO should we hash password in front side?
-        $newDetails['password'] = Hash::make($newDetails['password']);
+        if (isset($newDetails['password'])) {
+            $newDetails['password'] = Hash::make($newDetails['password']);
+        }
 
         if ($user->update($newDetails)) {
             return [

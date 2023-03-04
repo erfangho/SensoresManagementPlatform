@@ -5,6 +5,7 @@ namespace App\Http\Requests\UserRequests;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 
 class UpdateUserRequest extends FormRequest
@@ -30,7 +31,7 @@ class UpdateUserRequest extends FormRequest
             'role_id' => 'integer|between:1,2',
             'name' => 'string',
             'email' => 'email',
-            'phone' => 'unique:users',
+            'phone' => Rule::unique('users')->ignore($this->user()->id),
             'password' => 'string|min:6'
         ];
     }
