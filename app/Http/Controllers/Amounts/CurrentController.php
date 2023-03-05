@@ -14,11 +14,11 @@ use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class CurrentController extends Controller
 {
-    private CurrentRepositoryInterface $currentsRepository;
+    private CurrentRepositoryInterface $currentRepository;
 
-    public function __construct(CurrentRepositoryInterface $currentsRepository)
+    public function __construct(CurrentRepositoryInterface $currentRepository)
     {
-        $this->currentRepository= $currentsRepository;
+        $this->currentRepository= $currentRepository;
     }
 
     /**

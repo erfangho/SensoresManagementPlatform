@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Amounts\AmountController;
 use App\Http\Controllers\Amounts\CurrentController;
 use App\Http\Controllers\Amounts\HumidityController;
 use App\Http\Controllers\Amounts\TemperatureController;
@@ -87,6 +88,7 @@ Route::prefix('voltages')->group(function () {
     Route::get('/datetime/{date}/{timeRange}', [VoltageController::class, 'getVoltageByDateTime']);
 });
 
+Route::post('/amounts', [AmountController::class, 'setAllAmounts'])->middleware('apikey');
 
-Route::get('/orders', [OrderController::class, 'index']);
-Route::post('/orders', [OrderController::class, 'store']);
+Route::get('/orders', [OrderController::class, 'index'])->middleware('auth:sanctum');
+Route::post('/orders', [OrderController::class, 'store'])->middleware('auth:sanctum');
