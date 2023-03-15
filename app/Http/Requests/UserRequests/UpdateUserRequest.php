@@ -31,7 +31,7 @@ class UpdateUserRequest extends FormRequest
             'role_id' => 'integer|between:1,2',
             'name' => 'string',
             'email' => 'email',
-            'phone' => Rule::unique('users')->ignore($this->user()->id),
+            'phone' => Rule::unique('users')->ignore($this->user->id),
             'password' => 'string|min:6'
         ];
     }
