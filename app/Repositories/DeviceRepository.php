@@ -4,6 +4,8 @@ namespace App\Repositories;
 
 use App\Interfaces\DeviceRepositoryInterface;
 use App\Models\Device;
+use App\Models\SubZone;
+use App\Models\Zone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -12,7 +14,16 @@ class DeviceRepository implements DeviceRepositoryInterface
 
     public function getAllDevices()
     {
-        return Device::all();
+        $devices = Device::all();
+
+        foreach ($devices as $device) {
+            $subZone = SubZone::find($device['sub_zone_id']);
+
+            $device['subzone_name'] = $subZone['name'];
+        }
+
+        return $devices;
+
     }
 
     public function getDevice($device)

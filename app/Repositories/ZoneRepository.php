@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Interfaces\ZoneRepositoryInterface;
+use App\Models\User;
 use App\Models\Zone;
 use Illuminate\Http\Request;
 
@@ -11,7 +12,15 @@ class ZoneRepository implements ZoneRepositoryInterface
 
     public function getAllZones()
     {
-        return Zone::all();
+        $zones = Zone::all();
+
+        foreach ($zones as $zone) {
+            $user = User::find($zone['user_id']);
+
+            $zone['user_name'] = $user['name'];
+        }
+
+        return $zones;
     }
 
     public function getZone($zone)

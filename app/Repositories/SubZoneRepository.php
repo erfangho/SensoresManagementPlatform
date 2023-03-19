@@ -4,6 +4,8 @@ namespace App\Repositories;
 
 use App\Interfaces\SubZoneRepositoryInterface;
 use App\Models\SubZone;
+use App\Models\User;
+use App\Models\Zone;
 use Illuminate\Http\Request;
 
 class SubZoneRepository implements SubZoneRepositoryInterface
@@ -11,7 +13,15 @@ class SubZoneRepository implements SubZoneRepositoryInterface
 
     public function getAllSubZones()
     {
-        return SubZone::all();
+        $subZones = SubZone::all();
+
+        foreach ($subZones as $subZone) {
+            $zone = Zone::find($subZone['zone_id']);
+
+            $subZone['zone_name'] = $zone['name'];
+        }
+
+        return $subZones;
     }
 
     public function getSubZone($subZone)
