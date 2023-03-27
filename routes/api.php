@@ -3,6 +3,7 @@
 use App\Http\Controllers\Amounts\AmountController;
 use App\Http\Controllers\Amounts\CurrentController;
 use App\Http\Controllers\Amounts\HumidityController;
+use App\Http\Controllers\Amounts\PowerController;
 use App\Http\Controllers\Amounts\TemperatureController;
 use App\Http\Controllers\Amounts\VoltageController;
 use App\Http\Controllers\Device\DeviceController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\Zone\SubZoneController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Zone\ZoneController;
+use App\Models\Power;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
@@ -89,6 +91,10 @@ Route::prefix('voltages')->group(function () {
     Route::get('/datetime/{date}/{timeRange}', [VoltageController::class, 'getVoltageByDateTime'])->middleware('auth:sanctum');
 });
 
+Route::prefix('powers')->group(function () {
+    Route::get('/', [PowerController::class, 'index'])->middleware('auth:sanctum');
+});
+
 Route::post('/amounts', [AmountController::class, 'setAllAmounts'])->middleware('apikey');
 
 Route::get('/orders', [OrderController::class, 'index'])->middleware('auth:sanctum');
@@ -97,3 +103,4 @@ Route::post('/orders', [OrderController::class, 'store'])->middleware('auth:sanc
 Route::get('auth-problem', function () {
     return response()->json(['error' => 'unauthenticated'], ResponseAlias::HTTP_FORBIDDEN);
 })->name('auth-exception');
+
