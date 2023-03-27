@@ -13,7 +13,15 @@ class TemperatureRepository implements TemperatureRepositoryInterface
 {
     public function getAllTemperatures()
     {
-        return Temperature::all();
+        $temperatures = Temperature::all();
+
+        foreach ($temperatures as $temperature) {
+            $device = Device::find($temperature['device_id']);
+
+            $temperature['device_name'] = $device['name'];
+        }
+
+        return $temperatures;
     }
 
     public function createTemperature(Request $request)

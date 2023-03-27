@@ -13,7 +13,15 @@ class CurrentRepository implements CurrentRepositoryInterface
 {
     public function getAllCurrents()
     {
-        return Current::all();
+        $currents = Current::all();
+
+        foreach ($currents as $current) {
+            $device = Device::find($current['device_id']);
+
+            $current['device_name'] = $device['name'];
+        }
+
+        return $currents;
     }
 
     public function createCurrent(Request $request)
