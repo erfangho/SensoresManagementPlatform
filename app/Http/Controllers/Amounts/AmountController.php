@@ -8,6 +8,7 @@ use App\Interfaces\HumidityRepositoryInterface;
 use App\Interfaces\TemperatureRepositoryInterface;
 use App\Interfaces\VoltageRepositoryInterface;
 use App\Services\OrderReportService;
+use App\Services\StorePowerService;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
@@ -60,6 +61,9 @@ class AmountController extends Controller
             $this->currentRepository->createCurrent(new Request($currentDetails));
             $this->humidityRepository->createHumidity(new Request($humidityDetails));
             $this->voltageRepository->createVoltage(new Request($voltageDetails));
+
+            $powerService = new StorePowerService();
+            $powerService->calculateAndStorePower($request['current'], $request['voltage'], $request['device_id']);
 
             $order = new OrderReportService();
             $getStandByOrders = $order->getStandByOrders($request['device_id']);
