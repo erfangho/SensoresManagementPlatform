@@ -7,6 +7,7 @@ use App\Models\Device;
 use App\Models\Temperature;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 
 class TemperatureRepository implements TemperatureRepositoryInterface
@@ -79,5 +80,17 @@ class TemperatureRepository implements TemperatureRepositoryInterface
             ->get();
 
         return $temperatures;
+    }
+
+    public function getAverageByDate($startDate, $endDate)
+    {
+        $averages = DB::table('temperatures')
+            ->select(DB::raw('AVG(value) as average, DATE(created_at) as date'))
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->groupBy(DB::raw('DATE(created_at)'))
+            ->orderByDesc('date')
+            ->get();
+
+        return $averages;
     }
 }

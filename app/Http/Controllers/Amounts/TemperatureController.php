@@ -86,6 +86,12 @@ class TemperatureController extends Controller
         ]);
     }
 
+    public function getAverageTemperatureByDate($start, $end)
+    {
+        return response()->json([
+            'Temperatures' => $this->temperatureRepository->getAverageByDate($start, $end),
+        ]);
+    }
     public function exportTemperatureAsCsv()
     {
         $temperatures = Temperature::all();

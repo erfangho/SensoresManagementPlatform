@@ -9,6 +9,7 @@ use App\Models\Device;
 use App\Models\Voltage;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 
 class VoltageRepository implements VoltageRepositoryInterface
@@ -81,5 +82,17 @@ class VoltageRepository implements VoltageRepositoryInterface
             ->get();
 
         return $voltages;
+    }
+
+    public function getAverageByDate($startDate, $endDate)
+    {
+        $averages = DB::table('voltages')
+            ->select(DB::raw('AVG(value) as average, DATE(created_at) as date'))
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->groupBy(DB::raw('DATE(created_at)'))
+            ->orderByDesc('date')
+            ->get();
+
+        return $averages;
     }
 }

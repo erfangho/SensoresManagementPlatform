@@ -7,6 +7,7 @@ use App\Models\Current;
 use App\Models\Device;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 
 class CurrentRepository implements CurrentRepositoryInterface
@@ -79,5 +80,17 @@ class CurrentRepository implements CurrentRepositoryInterface
             ->get();
 
         return $currents;
+    }
+
+    public function getAverageByDate($startDate, $endDate)
+    {
+        $averages = DB::table('currents')
+            ->select(DB::raw('AVG(value) as average, DATE(created_at) as date'))
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->groupBy(DB::raw('DATE(created_at)'))
+            ->orderByDesc('date')
+            ->get();
+
+        return $averages;
     }
 }

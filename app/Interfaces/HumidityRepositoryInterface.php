@@ -11,4 +11,5 @@ interface HumidityRepositoryInterface
     public function getHumidityByDate($startDate, $endDate);
     public function getHumidityByDeviceId($deviceId);
     public function getHumidityByDateTime($date, $timeRange);
+    public function getAverageByDate($startDate, $endDate);
 }

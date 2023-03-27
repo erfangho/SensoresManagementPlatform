@@ -86,6 +86,12 @@ class VoltageController extends Controller
         ]);
     }
 
+    public function getAverageVoltageByDate($start, $end)
+    {
+        return response()->json([
+            'Voltages' => $this->voltageRepository->getAverageByDate($start, $end),
+        ]);
+    }
     public function exportVoltageAsCsv()
     {
         $temperatures = Voltage::all();

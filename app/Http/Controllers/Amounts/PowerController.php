@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Device;
 use App\Models\Power;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
+
 
 class PowerController extends Controller
 {
@@ -25,5 +28,19 @@ class PowerController extends Controller
         }
 
         return $powers;
+    }
+
+    public function getAverageByDate($start, $end)
+    {
+        $averages = DB::table('powers')
+            ->select(DB::raw('AVG(value) as average, DATE(created_at) as date'))
+            ->whereBetween('created_at', [$start, $end])
+            ->groupBy(DB::raw('DATE(created_at)'))
+            ->orderByDesc('date')
+            ->get();
+
+        return response()->json([
+            'Powers' => $averages,
+        ], ResponseAlias::HTTP_OK);
     }
 }

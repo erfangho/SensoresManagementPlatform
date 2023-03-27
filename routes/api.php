@@ -49,6 +49,7 @@ Route::resource('devices', DeviceController::class)->except('create')->middlewar
 
 Route::prefix('temperatures')->group(function () {
     Route::get('/export-csv', [TemperatureController::class, 'exportTemperatureAsCsv'])->middleware('auth:sanctum');
+    Route::get('/average/{start}/{end}', [TemperatureController::class, 'getAverageTemperatureByDate'])->middleware('auth:sanctum');
     Route::post('/', [TemperatureController::class, 'store'])->middleware('apikey');
     Route::get('/', [TemperatureController::class, 'index'])->middleware('auth:sanctum');
     Route::get('/{start}/{end}', [TemperatureController::class, 'getTemperatureByDate'])->middleware('auth:sanctum');
@@ -60,6 +61,7 @@ Route::prefix('temperatures')->group(function () {
 
 Route::prefix('humidities')->group(function () {
     Route::get('/export-csv', [HumidityController::class, 'exportHumidityAsCsv'])->middleware('auth:sanctum');
+    Route::get('/average/{start}/{end}', [HumidityController::class, 'getAverageHumidityByDate'])->middleware('auth:sanctum');
     Route::post('/', [HumidityController::class, 'store'])->middleware('apikey');
     Route::get('/', [HumidityController::class, 'index'])->middleware('auth:sanctum');
     Route::get('/{start}/{end}', [HumidityController::class, 'getHumidityByDate'])->middleware('auth:sanctum');
@@ -74,6 +76,7 @@ Route::prefix('humidities')->group(function () {
 
 Route::prefix('currents')->group(function () {
     Route::get('/export-csv', [CurrentController::class, 'exportCurrentAsCsv'])->middleware('auth:sanctum');
+    Route::get('/average/{start}/{end}', [CurrentController::class, 'getAverageCurrentByDate'])->middleware('auth:sanctum');
     Route::post('/', [CurrentController::class, 'store'])->middleware('apikey');
     Route::get('/', [CurrentController::class, 'index'])->middleware('auth:sanctum');
     Route::get('/{start}/{end}', [CurrentController::class, 'getCurrentByDate'])->middleware('auth:sanctum');
@@ -84,6 +87,7 @@ Route::prefix('currents')->group(function () {
 
 Route::prefix('voltages')->group(function () {
     Route::get('/export-csv', [VoltageController::class, 'exportVoltageAsCsv'])->middleware('auth:sanctum');
+    Route::get('/average/{start}/{end}', [VoltageController::class, 'getAverageVoltageByDate'])->middleware('auth:sanctum');
     Route::post('/', [VoltageController::class, 'store'])->middleware('apikey');
     Route::get('/', [VoltageController::class, 'index'])->middleware('auth:sanctum');
     Route::get('/{start}/{end}', [VoltageController::class, 'getVoltageByDate'])->middleware('auth:sanctum');
@@ -93,6 +97,7 @@ Route::prefix('voltages')->group(function () {
 
 Route::prefix('powers')->group(function () {
     Route::get('/', [PowerController::class, 'index'])->middleware('auth:sanctum');
+    Route::get('/average/{start}/{end}', [PowerController::class, 'getAverageByDate'])->middleware('auth:sanctum');
 });
 
 Route::post('/amounts', [AmountController::class, 'setAllAmounts'])->middleware('apikey');

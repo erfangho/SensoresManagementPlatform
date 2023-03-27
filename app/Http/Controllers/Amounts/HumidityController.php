@@ -87,6 +87,12 @@ class HumidityController extends Controller
         ]);
     }
 
+    public function getAverageHumidityByDate($start, $end)
+    {
+        return response()->json([
+            'Humidities' => $this->humidityRepository->getAverageByDate($start, $end),
+        ]);
+    }
     public function exportHumidityAsCsv()
     {
         $temperatures = Humidity::all();

@@ -11,4 +11,5 @@ interface VoltageRepositoryInterface
     public function getVoltageByDate($startDate, $endDate);
     public function getVoltageByDeviceId($deviceId);
     public function getVoltageByDateTime($date, $timeRange);
+    public function getAverageByDate($startDate, $endDate);
 }

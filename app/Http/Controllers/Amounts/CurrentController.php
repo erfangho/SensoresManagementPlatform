@@ -89,6 +89,13 @@ class CurrentController extends Controller
         ]);
     }
 
+    public function getAverageCurrentByDate($start, $end)
+    {
+        return response()->json([
+            'Currents' => $this->currentRepository->getAverageByDate($start, $end),
+        ]);
+    }
+
     public function exportCurrentAsCsv()
     {
         $temperatures = Current::all();
