@@ -105,9 +105,17 @@ class UserController extends Controller
                 $this->userRepository->updateUser($user, $request)
                 , ResponseAlias::HTTP_OK);
         } else {
-            return response()->json([
-                'message' => 'شما دسترسی به این قسمت ندارید',
-            ], ResponseAlias::HTTP_FORBIDDEN);
+            if (auth()->user()['phone'] === $user['phone']) {
+                $request->only('password');
+
+                return response()->json(
+                    $this->userRepository->updateUser($user, $request)
+                    , ResponseAlias::HTTP_OK);
+            } else {
+                return response()->json([
+                    'message' => 'شما دسترسی به این قسمت ندارید',
+                ], ResponseAlias::HTTP_FORBIDDEN);
+            }
         }
     }
 
