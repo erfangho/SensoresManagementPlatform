@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Amounts;
 use App\Http\Controllers\Controller;
 use App\Models\Device;
 use App\Models\Power;
+use App\Models\Voltage;
+use App\Services\ExportService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
@@ -42,5 +44,17 @@ class PowerController extends Controller
         return response()->json([
             'Powers' => $averages,
         ], ResponseAlias::HTTP_OK);
+    }
+
+    public function exportPowersAsCsv()
+    {
+        $powers = Power::all();
+
+        $exportService = new ExportService();
+
+        return $exportService->exportCsv(
+            $powers,
+            'powers.csv',
+            ['value', 'device_id', 'created_at']);
     }
 }

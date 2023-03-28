@@ -98,6 +98,7 @@ Route::prefix('voltages')->group(function () {
 Route::prefix('powers')->group(function () {
     Route::get('/', [PowerController::class, 'index'])->middleware('auth:sanctum');
     Route::get('/average/{start}/{end}', [PowerController::class, 'getAverageByDate'])->middleware('auth:sanctum');
+    Route::get('/export-csv', [PowerController::class, 'exportPowersAsCsv'])->middleware('auth:sanctum');
 });
 
 Route::post('/amounts', [AmountController::class, 'setAllAmounts'])->middleware('apikey');
