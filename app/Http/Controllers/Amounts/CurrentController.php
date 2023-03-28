@@ -10,6 +10,7 @@ use App\Models\Order;
 use App\Models\Temperature;
 use App\Services\ExportService;
 use App\Services\OrderReportService;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class CurrentController extends Controller
@@ -89,10 +90,10 @@ class CurrentController extends Controller
         ]);
     }
 
-    public function getAverageCurrentByDate($start, $end)
+    public function getAverageCurrentByDate(Request $request, $start, $end)
     {
         return response()->json([
-            'Currents' => $this->currentRepository->getAverageByDate($start, $end),
+            'Currents' => $this->currentRepository->getAverageByDate($request, $start, $end),
         ]);
     }
 

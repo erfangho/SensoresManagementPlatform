@@ -11,5 +11,5 @@ interface CurrentRepositoryInterface
     public function getCurrentByDate($startDate, $endDate);
     public function getCurrentByDeviceId($deviceId);
     public function getCurrentByDateTime($date, $timeRange);
-    public function getAverageByDate($startDate, $endDate);
+    public function getAverageByDate($request, $startDate, $endDate);
 }
