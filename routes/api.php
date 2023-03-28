@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Amounts\AmountController;
 use App\Http\Controllers\Amounts\CurrentController;
+use App\Http\Controllers\Amounts\DeltaPowerController;
 use App\Http\Controllers\Amounts\HumidityController;
 use App\Http\Controllers\Amounts\PowerController;
 use App\Http\Controllers\Amounts\TemperatureController;
@@ -99,6 +100,7 @@ Route::prefix('powers')->group(function () {
     Route::get('/', [PowerController::class, 'index'])->middleware('auth:sanctum');
     Route::get('/average/{start}/{end}', [PowerController::class, 'getAverageByDate'])->middleware('auth:sanctum');
     Route::get('/export-csv', [PowerController::class, 'exportPowersAsCsv'])->middleware('auth:sanctum');
+    Route::get('/delta/{start}/{end}', [DeltaPowerController::class, 'getDeltaPower'])->middleware('auth:sanctum');
 });
 
 Route::post('/amounts', [AmountController::class, 'setAllAmounts'])->middleware('apikey');

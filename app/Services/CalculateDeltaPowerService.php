@@ -6,6 +6,7 @@ namespace App\Services;
 use App\Models\DeltaPower;
 use App\Models\Order;
 use App\Models\Power;
+use Illuminate\Support\Facades\DB;
 
 class CalculateDeltaPowerService
 {
@@ -63,5 +64,33 @@ class CalculateDeltaPowerService
                 'second_order_id' => $lastOrderId,
             ]);
         }
+    }
+
+    public function getDeltaPowerNumber($request, $startDate, $endDate)
+    {
+        $finalDeltaPower = 0;
+        $data = DeltaPower::select('delta_powers.value', 'delta_powers.created_at')
+            ->join('devices', 'delta_powers.device_id', '=', 'devices.id')
+            ->join('sub_zones', 'devices.sub_zone_id', '=', 'sub_zones.id')
+            ->join('zones', 'sub_zones.zone_id', '=', 'zones.id')
+            ->when($request->has('zone_id'), function ($query) use ($request) {
+                $query->where('zones.id', '=', $request['zone_id']);
+            })
+            ->when($request->has('sub_zone_id'), function ($query) use ($request) {
+                $query->where('sub_zones.id', '=', $request['sub_zone_id']);
+            })
+            ->when($request->has('device_id'), function ($query) use ($request) {
+                $query->where('delta_powers.device_id', '=', $request['device_id']);
+            })
+            ->where('value', '<', 0)
+            ->whereBetween('delta_powers.created_at', [$startDate, $endDate])
+            ->orderByDesc('delta_powers.created_at')
+            ->pluck('value');
+
+            foreach ($data as $datum) {
+                $finalDeltaPower += $datum;
+            }
+
+            return $finalDeltaPower;
     }
 }
