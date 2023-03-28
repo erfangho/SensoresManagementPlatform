@@ -17,7 +17,8 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $orders = Order::all();
+        $orders = Order::Paginate(10);
+        $count = $orders->total();
 
         foreach ($orders as $order) {
             $user = User::find($order['user_id']);
@@ -28,7 +29,10 @@ class OrderController extends Controller
         }
 
 
-        return response()->json($orders, ResponseAlias::HTTP_OK);
+        return response()->json([
+            'orders' => $orders->items(),
+            'count' => $count,
+        ], ResponseAlias::HTTP_OK);
     }
 
     public function store(StoreOrderRequest $request)
