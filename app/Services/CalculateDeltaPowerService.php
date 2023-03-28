@@ -3,6 +3,7 @@
 namespace App\Services;
 
 
+use App\Models\DeltaPower;
 use App\Models\Order;
 use App\Models\Power;
 
@@ -13,6 +14,8 @@ class CalculateDeltaPowerService
 
         $pOne = 0;
         $pTwo = 0;
+        $oneBeforeLastOrderId = null;
+
         $lastThreePowers = Power::query()->where('device_id', $deviceId)
             ->latest()
             ->limit(3)
@@ -47,8 +50,18 @@ class CalculateDeltaPowerService
             if (count($threePowersOfOneBeforeLastOrder) != 0) {
                 $pTwo = $pTwo / count($threePowersOfOneBeforeLastOrder);
             }
+
+            $oneBeforeLastOrderId = $oneBeforeLastOrder['id'];
         }
 
         $deltaPower = $pOne - $pTwo;
+        if ($deltaPower != 0) {
+            return DeltaPower::create([
+                'device_id' => $deviceId,
+                'value' => $deltaPower,
+                'first_order_id' => $oneBeforeLastOrderId,
+                'second_order_id' => $lastOrderId,
+            ]);
+        }
     }
 }
