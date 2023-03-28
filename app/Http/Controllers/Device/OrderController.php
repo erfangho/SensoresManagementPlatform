@@ -7,6 +7,7 @@ use App\Http\Requests\DeviceRequests\StoreOrderRequest;
 use App\Models\Device;
 use App\Models\Order;
 use App\Models\SubZone;
+use App\Services\CalculateDeltaPowerService;
 use App\Services\OrderReportService;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -41,8 +42,10 @@ class OrderController extends Controller
 
         $orderDetails['status'] = config('constants.DEVICE_POWER_STATUS.standBy');
 
-//        dd($orderDetails);
         $order = Order::create($orderDetails);
+
+        $calculateDeltaPowerService = new CalculateDeltaPowerService();
+        $calculateDeltaPowerService->calculateAndStoreDeltaPower($order['id'], $order['device_id']);
 
         return response()->json(
             [

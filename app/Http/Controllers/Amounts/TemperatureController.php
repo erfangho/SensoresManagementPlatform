@@ -8,6 +8,7 @@ use App\Interfaces\TemperatureRepositoryInterface;
 use App\Models\Temperature;
 use App\Services\ExportService;
 use App\Services\OrderReportService;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class TemperatureController extends Controller
@@ -86,10 +87,10 @@ class TemperatureController extends Controller
         ]);
     }
 
-    public function getAverageTemperatureByDate($start, $end)
+    public function getAverageTemperatureByDate(Request $request, $start, $end)
     {
         return response()->json([
-            'Temperatures' => $this->temperatureRepository->getAverageByDate($start, $end),
+            'Temperatures' => $this->temperatureRepository->getAverageByDate($request, $start, $end),
         ]);
     }
     public function exportTemperatureAsCsv()

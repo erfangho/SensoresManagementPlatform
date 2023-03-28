@@ -12,5 +12,5 @@ interface TemperatureRepositoryInterface
     public function getTemperatureByDeviceId($deviceId);
     public function getTemperatureByDateTime($date, $timeRange);
     public function createTemperature(Request $request);
-    public function getAverageByDate($startDate, $endDate);
+    public function getAverageByDate($request, $startDate, $endDate);
 }

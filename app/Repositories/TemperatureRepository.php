@@ -82,15 +82,30 @@ class TemperatureRepository implements TemperatureRepositoryInterface
         return $temperatures;
     }
 
-    public function getAverageByDate($startDate, $endDate)
+    public function getAverageByDate($request, $startDate, $endDate)
     {
-        $averages = DB::table('temperatures')
-            ->select(DB::raw('AVG(value) as average, DATE(created_at) as date'))
-            ->whereBetween('created_at', [$startDate, $endDate])
-            ->groupBy(DB::raw('DATE(created_at)'))
-            ->orderByDesc('date')
-            ->get();
+        try {
+            $data = Temperature::selectRaw('AVG(temperatures.value) as average, DATE(temperatures.created_at) as date')
+                ->join('devices', 'temperatures.device_id', '=', 'devices.id')
+                ->join('sub_zones', 'devices.sub_zone_id', '=', 'sub_zones.id')
+                ->join('zones', 'sub_zones.zone_id', '=', 'zones.id')
+                ->when($request->has('zone_id'), function ($query) use ($request) {
+                    $query->where('zones.id', '=', $request['zone_id']);
+                })
+                ->when($request->has('sub_zone_id'), function ($query) use ($request) {
+                    $query->where('sub_zones.id', '=', $request['sub_zone_id']);
+                })
+                ->when($request->has('device_id'), function ($query) use ($request) {
+                    $query->where('temperatures.device_id', '=', $request['device_id']);
+                })
+                ->whereBetween('temperatures.created_at', [$startDate, $endDate])
+                ->groupBy(DB::raw('DATE(created_at)'))
+                ->orderByDesc('date')
+                ->get();
 
-        return $averages;
+            return $data;
+        } catch (\Exception $exception) {
+
+        }
     }
 }
