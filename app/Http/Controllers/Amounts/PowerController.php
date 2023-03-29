@@ -18,19 +18,23 @@ class PowerController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        $powers = Power::all();
+        if (auth()->user()['role_id'] == config('constants.roles.admin')) {
+            $powers = Power::all();
 
-        foreach ($powers as $power) {
-            $device = Device::find($power['device_id']);
+            foreach ($powers as $power) {
+                $device = Device::find($power['device_id']);
 
-            $power['device_name'] = $device['name'];
+                $power['device_name'] = $device['name'];
+            }
+
+            return response()->json([
+                'Powers' => $powers,
+            ], ResponseAlias::HTTP_OK   );
         }
-
-        return $powers;
     }
 
     public function getAverageByDate(Request $request, $start, $end)
@@ -51,14 +55,20 @@ class PowerController extends Controller
                 })
                 ->whereBetween('powers.created_at', [$start, $end])
                 ->groupBy(DB::raw('DATE(created_at)'))
-                ->orderByDesc('date')
-                ->get();
-
-            return response()->json([
-                'Powers' => $data,
-            ], ResponseAlias::HTTP_OK);
+                ->orderBy('date');
         } catch (\Exception $exception) {
 
+        }
+
+        if (auth()->user()['role_id'] == config('constants.roles.admin')) {
+                return response()->json([
+                    'Powers' => $data->get(),
+                ], ResponseAlias::HTTP_OK);
+        } else {
+                return response()->json([
+                    'Powers' => $data->join('users', 'users.id', '=', 'devices.user_id')
+                        ->where('users.id', '=', auth()->user()['id'])->get(),
+                ], ResponseAlias::HTTP_OK);
         }
     }
 

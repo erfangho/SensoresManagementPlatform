@@ -14,16 +14,27 @@ class DeviceRepository implements DeviceRepositoryInterface
 
     public function getAllDevices()
     {
-        $devices = Device::all();
+        if (auth()->user()['role_id'] == config('constants.roles.admin')) {
+            $devices = Device::all();
 
-        foreach ($devices as $device) {
-            $subZone = SubZone::find($device['sub_zone_id']);
+            foreach ($devices as $device) {
+                $subZone = SubZone::find($device['sub_zone_id']);
 
-            $device['subzone_name'] = $subZone['name'];
+                $device['subzone_name'] = $subZone['name'];
+            }
+
+            return $devices;
+        } else {
+            $devices = Device::query()->where('user_id', auth()->user()['id']);
+
+            foreach ($devices as $device) {
+                $subZone = SubZone::find($device['sub_zone_id']);
+
+                $device['subzone_name'] = $subZone['name'];
+            }
+
+            return $devices->get();
         }
-
-        return $devices;
-
     }
 
     public function getDevice($device)

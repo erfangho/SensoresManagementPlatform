@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class TemperatureRepository implements TemperatureRepositoryInterface
 {
@@ -100,12 +101,16 @@ class TemperatureRepository implements TemperatureRepositoryInterface
                 })
                 ->whereBetween('temperatures.created_at', [$startDate, $endDate])
                 ->groupBy(DB::raw('DATE(created_at)'))
-                ->orderByDesc('date')
-                ->get();
-
-            return $data;
+                ->orderBy('date');
         } catch (\Exception $exception) {
 
+        }
+
+        if (auth()->user()['role_id'] == config('constants.roles.admin')) {
+            return $data->get();
+        } else {
+            return $data->join('users', 'users.id', '=', 'devices.user_id')
+                ->where('users.id', '=', auth()->user()['id'])->get();
         }
     }
 }
