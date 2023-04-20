@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 interface TemperatureRepositoryInterface
 {
-    public function getAllTemperatures();
+    public function getAllTemperatures($request);
     public function getTemperatureByDate($startDate, $endDate);
     public function getTemperatureByDeviceId($deviceId);
     public function getTemperatureByDateTime($date, $timeRange);

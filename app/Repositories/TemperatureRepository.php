@@ -13,9 +13,9 @@ use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class TemperatureRepository implements TemperatureRepositoryInterface
 {
-    public function getAllTemperatures()
+    public function getAllTemperatures($request)
     {
-        $temperatures = Temperature::all();
+        $temperatures = Temperature::orderBy('created_at', 'desc')->take(100)->get();
 
         foreach ($temperatures as $temperature) {
             $device = Device::find($temperature['device_id']);

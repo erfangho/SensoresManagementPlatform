@@ -14,7 +14,7 @@ class HumidityRepository implements HumidityRepositoryInterface
 {
     public function getAllHumidities()
     {
-        $humidities = Humidity::all();
+        $humidities = Humidity::orderBy('created_at', 'desc')->take(100)->get();
 
         foreach ($humidities as $humiditie) {
             $device = Device::find($humiditie['device_id']);

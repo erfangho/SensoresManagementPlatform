@@ -64,7 +64,6 @@ class DeviceRepository implements DeviceRepositoryInterface
         ]);
 
         $deviceDetails['api_key'] = Str::random(12);
-//        dd($deviceDetails);
 
         return [
             'Device' => Device::create($deviceDetails),

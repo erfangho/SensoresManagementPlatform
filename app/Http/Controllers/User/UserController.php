@@ -128,9 +128,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         if (Gate::allows('is-admin')) {
-            return response()->json(
-                $this->userRepository->deleteUser($user)
-                , ResponseAlias::HTTP_OK);
+            return $this->userRepository->deleteUser($user);
         } else {
             return response()->json([
                 'message' => 'شما دسترسی به این قسمت ندارید',

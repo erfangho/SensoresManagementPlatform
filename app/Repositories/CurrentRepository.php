@@ -15,7 +15,7 @@ class CurrentRepository implements CurrentRepositoryInterface
 {
     public function getAllCurrents()
     {
-        $currents = Current::all();
+        $currents = Current::orderBy('created_at', 'desc')->take(100)->get();
 
         foreach ($currents as $current) {
             $device = Device::find($current['device_id']);

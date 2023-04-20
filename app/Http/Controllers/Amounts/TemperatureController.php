@@ -25,10 +25,10 @@ class TemperatureController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
         return response()->json([
-            'Temperatures' => $this->temperatureRepository->getAllTemperatures(),
+            'Temperatures' => $this->temperatureRepository->getAllTemperatures($request),
         ]);
     }
 

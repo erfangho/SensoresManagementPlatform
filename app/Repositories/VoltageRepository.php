@@ -16,7 +16,7 @@ class VoltageRepository implements VoltageRepositoryInterface
 {
     public function getAllVoltages()
     {
-        $voltages = Voltage::all();
+        $voltages = Voltage::orderBy('created_at', 'desc')->take(100)->get();
 
         foreach ($voltages as $voltage) {
             $device = Device::find($voltage['device_id']);

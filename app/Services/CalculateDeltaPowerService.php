@@ -19,7 +19,7 @@ class CalculateDeltaPowerService
 
         $lastThreePowers = Power::query()->where('device_id', $deviceId)
             ->latest()
-            ->limit(3)
+            ->limit(5)
             ->pluck('value');
 
         foreach ($lastThreePowers as $power) {
@@ -40,7 +40,7 @@ class CalculateDeltaPowerService
             $threePowersOfOneBeforeLastOrder = Power::query()->where('device_id', $deviceId)
                 ->where('created_at', '<', $oneBeforeLastOrder['created_at'])
                 ->latest()
-                ->limit(3)
+                ->limit(5)
                 ->pluck('value');
 
 
@@ -53,6 +53,8 @@ class CalculateDeltaPowerService
             }
 
             $oneBeforeLastOrderId = $oneBeforeLastOrder['id'];
+        } else {
+            $oneBeforeLastOrderId = $lastOrderId;
         }
 
         $deltaPower = $pOne - $pTwo;

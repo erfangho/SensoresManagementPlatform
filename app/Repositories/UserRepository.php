@@ -6,6 +6,7 @@ use App\Interfaces\UserRepositoryInterface;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -21,12 +22,18 @@ class UserRepository implements UserRepositoryInterface
 
     public function deleteUser($user)
     {
-        if ($user->deleteOrFail()) {
-            return [
-                'message' => 'کاربر با موفقیت حذف شد',
-            ];
+        if ($user['role_id'] === 3) {
+            return response()->json([
+                'message' => 'این کاربر را نمی توان حذف کرد.',
+            ], ResponseAlias::HTTP_FORBIDDEN);
         } else {
-            return $user->deleteOrFail();
+            if ($user->deleteOrFail()) {
+                return response()->json([
+                    'message' => 'کاربر با موفقیت حذف شد.',
+                ], ResponseAlias::HTTP_OK);
+            } else {
+                return $user->deleteOrFail();
+            }
         }
     }
 

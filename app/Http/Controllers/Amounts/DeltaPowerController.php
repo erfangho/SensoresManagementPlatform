@@ -16,7 +16,7 @@ class DeltaPowerController extends Controller
         $deltaPower = $calculateDeltaPowerService->getDeltaPowerNumber($request, $start, $end);
 
         return response()->json([
-            'deltaPower' => $deltaPower,
+            'deltaPower' => -$deltaPower,
         ], ResponseAlias::HTTP_OK);
     }
 }
