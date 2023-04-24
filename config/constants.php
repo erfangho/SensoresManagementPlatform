@@ -2,6 +2,7 @@
 
 return [
     'roles' => [
+        'owner' => 3,
         'admin' => 1,
         'agent' => 2,
     ],

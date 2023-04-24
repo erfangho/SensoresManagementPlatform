@@ -51,7 +51,7 @@ class OrderController extends Controller
 
         $orderDetails['status'] = config('constants.DEVICE_POWER_STATUS.standBy');
 
-        if ($request->has('zone_id')) {
+        if ($request->has('zone_id') && $request['zone_id'] != null) {
             $devices = DB::table('devices')
                 ->join('sub_zones', 'devices.sub_zone_id', '=', 'sub_zones.id')
                 ->join('zones', 'sub_zones.zone_id', '=', 'zones.id')
@@ -60,8 +60,19 @@ class OrderController extends Controller
                 ->get();
 
             foreach ($devices as $device) {
-                
+                $orderDetails['device_id'] = $device->id;
+                $order = Order::create($orderDetails);
+
+                $calculateDeltaPowerService = new CalculateDeltaPowerService();
+                $calculateDeltaPowerService->calculateAndStoreDeltaPower($order['id'], $device->id);
             }
+
+            return response()->json(
+                [
+                    'message' => 'دستورات با موفقیت ثبت شد',
+                ],
+                ResponseAlias::HTTP_CREATED
+            );
         } else {
             $order = Order::create($orderDetails);
 
