@@ -1,5 +1,4 @@
-# 
-Management and monitoring of temperature devices
+# Management and monitoring of temperature devices
 
 comprehensive management and monitoring system for temperature devices using Laravel (REST API). This project involved gathering data from multiple devices and displaying it in visually appealing charts for easy analysis. I also implemented a feature to send orders to the devices, allowing seamless control and coordination.
 ## Features
