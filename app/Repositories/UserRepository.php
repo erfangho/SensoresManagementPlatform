@@ -22,7 +22,7 @@ class UserRepository implements UserRepositoryInterface
 
     public function deleteUser($user)
     {
-        if ($user['role_id'] === 3) {
+        if ($user['role_id'] === 1) {
             return response()->json([
                 'message' => 'این کاربر را نمی توان حذف کرد.',
             ], ResponseAlias::HTTP_FORBIDDEN);
